@@ -20,13 +20,23 @@ body {
     border-radius: 6px;
     background-color: #353535c9;
 }
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    z-index: 1000;
+    display: none;
+}
 .bullet {
     width: 20px;          
             height: 20px;       
             background-color: red; 
             border-radius: 50%;    
             position: absolute;
-            bullet.style.transition = "all 2s linear";   
+            z-index: 1001;
 
 }
 .field {
