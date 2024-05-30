@@ -106,7 +106,7 @@ function choose_direction(cur_position, last_position) {
             }
         }
         if (diff.row === 0 && diff.col < 0) {
-            console.log(temp);
+           
             if (temp === 180 || temp === 90) {
                 return '';
             } else if (temp === 270) {
@@ -116,7 +116,7 @@ function choose_direction(cur_position, last_position) {
             }
         }
         if (diff.row === 0 && diff.col > 0) {
-            console.log(temp);
+            
             if (temp === 0 || temp === 270) {
                 return '';
             } else if (temp === 180) {
