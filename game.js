@@ -181,6 +181,7 @@ function missile_path(cur_position, last_position) {
     }
     
     if (direction == 'u') {
+        missilePath.push(cur_position);
         for (let i = cur_position.row + 1; i < 8; i++) {
             last_position = { ...cur_position };  
             let new_position = {
@@ -197,6 +198,7 @@ function missile_path(cur_position, last_position) {
             }
         }
     } else if (direction == 'd') {
+        missilePath.push(cur_position);
         for (let i = cur_position.row - 1; i >= 0; i--) {
             last_position = { ...cur_position };  // Create a copy of cur_position
             let new_position = {
@@ -213,6 +215,7 @@ function missile_path(cur_position, last_position) {
             }
         }
     } else if (direction == 'r') {
+        missilePath.push(cur_position);
         for (let i = cur_position.col + 1; i < 8; i++) {
             last_position = { ...cur_position }; 
             let new_position = {
@@ -229,6 +232,7 @@ function missile_path(cur_position, last_position) {
             }
         }
     } else if (direction == 'l') {
+        missilePath.push(cur_position);
         for (let i = cur_position.col - 1; i >= 0; i--) {
             last_position = { ...cur_position }; 
             let new_position = {
@@ -252,7 +256,8 @@ function missile_path(cur_position, last_position) {
 
 
 async function fire() {
-    
+    const overlay = document.getElementById("overlay");
+    overlay.style.display = "block"; 
     let position;
    
     if (erenTurn) {
@@ -269,7 +274,7 @@ async function fire() {
     let field = getFieldFromPosition(position);
     const box = document.getElementById(field);
     const boxRect = box.getBoundingClientRect();
-    
+    bullet.style.transition = `all 249ms linear`;
    
     bullet.style.left = (boxRect.left+(( boxRect.width-bullet.style.width)/2)) + 'px';
    
@@ -316,9 +321,14 @@ async function fire() {
                     }
                 }
             }
+            
+                overlay.style.display = "none";
+                
+            
         }
       
-    }, 300); 
+    }, 250); 
+    
 
 }
 
