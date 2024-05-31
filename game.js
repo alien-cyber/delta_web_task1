@@ -6,7 +6,7 @@ let fieldOnFocus;
 let pieceOnFocus;
 
 let erenTurn = true;
-
+let game_end=false;
 
 let markedMoves = [];
 
@@ -274,7 +274,7 @@ function fire() {
     let field = getFieldFromPosition(position);
     const box = document.getElementById(field);
     const boxRect = box.getBoundingClientRect();
-    bullet.style.transition = `all 249ms linear`;
+    bullet.style.transition = `all 239ms linear`;
    
     bullet.style.left = (boxRect.left+(( boxRect.width-bullet.style.width)/2)) + 'px';
    
@@ -313,11 +313,12 @@ function fire() {
                 let arr = Array.from(piece_id);
                 if (arr.length > 1 && arr[1] === 'k') {
                     if (arr[0]=='r') {
-                        alert("Team Eren wins");
-                        setTimeout(reset, 500);
+                        popup("Team Eren wins");
+                        game_end=true;
                     } else {
-                        alert("Team Reiner wins");
-                        setTimeout(reset, 500);
+                        popup("Team Reiner wins");
+                        game_end=true;
+                        
                     }
                 }
             }
@@ -327,7 +328,7 @@ function fire() {
             
         }
       
-    }, 250); 
+    }, 240); 
     
 
 }
@@ -431,11 +432,11 @@ function updateTimer() {
         timerDisplay.textContent = 'Time left: 0';
         timerRunning = false;
         if (erenTurn){ 
-            alert('Time is up!  Reinar Team wins');
+            popup('Time is up!  Reinar Team wins');
             setTimeout(reset, 500);
                }
         else {
-            alert('Time is up!  Eren Team wins');
+            popup('Time is up!  Eren Team wins');
             setTimeout(reset, 500);
             
             }
@@ -462,7 +463,7 @@ function resetCountdown() {
 }
 function instruct(){
     if (!timerRunning) {
-        alert("Start or resume game to play");
+        popup("Start or resume game to play");
         
     }
 }
@@ -882,5 +883,27 @@ function update_angles(rotated_angle){
         return reinarRicochet_angle
     }
 }
+
+
+const modal=document.getElementById('modal');
+const popup_overlay=document.getElementById('popup_overlay');
+function popup(message){
+            const message_container=document.getElementById('popup');
+            message_container.textContent=message;
+            modal.classList.toggle('active');
+            popup_overlay.classList.add('active');
+
+
+
+}
+function closepopup(){
+    modal.classList.toggle('active');
+    popup_overlay.classList.remove('active');
+    if (game_end){
+        setTimeout(reset, 500);
+    }
+
+}
+
 
 setupGame();
