@@ -1,3 +1,6 @@
+
+
+
 body {
     background-color: #121212;
     color: white;
@@ -39,6 +42,78 @@ body {
             z-index: 1001;
 
 }
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 200ms ease-in-out;
+    border: 1px solid black;
+    border-radius: 10px;
+    z-index: 1003;
+    background-color: white;
+    width: 400px;
+    
+    max-width: 80%;
+  }
+.modal.active {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .modal-header {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+   
+  }
+
+  .close-button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+
+    
+    background-color: white;
+    color: #02070b;
+    padding: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 17px;
+  }
+  .close-button:hover {
+    background-color: #e60404d0 
+}
+  #popup_overlay {
+    position: fixed;
+    opacity: 0;
+    transition: 200ms ease-in-out;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    pointer-events: none;
+    z-index: 1002;
+  }
+   
+  #popup_overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+
+#popup {
+     color:#121212;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
 .field {
     width: 64px;
     height: 64px;
