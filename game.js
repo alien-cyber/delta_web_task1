@@ -255,7 +255,7 @@ function missile_path(cur_position, last_position) {
 
 
 
-async function fire() {
+function fire() {
     const overlay = document.getElementById("overlay");
     overlay.style.display = "block"; 
     let position;
