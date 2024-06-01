@@ -265,6 +265,8 @@ function fire() {
     } else {
         position = givePosition(board, 'rc');
     }
+
+   
     const bullet = document.createElement('div');
     bullet.classList.add('bullet');
      gameboard.appendChild(bullet);
@@ -321,6 +323,15 @@ function fire() {
                         
                     }
                 }
+                else if (arr[1] === 's') {
+                    console.log('working');
+                    let piece=document.getElementById(piece_id);
+
+                    piece.remove();
+                    newboard(finalPosition);
+
+
+                }
             }
             
                 overlay.style.display = "none";
@@ -331,6 +342,9 @@ function fire() {
     }, 240); 
     
 
+}
+function newboard(piece_position){
+     board[piece_position.row][piece_position.col]='';
 }
 
 
@@ -389,19 +403,22 @@ let countdownInterval;
 let timeLeft = 10;
 let timerRunning = false;
 let initialTime = 10;
+var image=document.getElementById('player_image');
 const timerDisplay = document.getElementById('timer');
 function changeTurn() {
 
     let em = document.getElementById("turnIndicator");
 
 
-   if(erenTurn) {
-     erenTurn = false;
-        em.innerHTML = "Reinar Team Turn";
-     } else {
-        erenTurn = true;
-        em.innerHTML = "Eren Team Turn"
-    }
+    if(erenTurn) {
+        erenTurn = false;
+           em.innerHTML = "Reinar Team Turn";
+           image.src="assets\\reinar_titan.jpg";
+        } else {
+           erenTurn = true;
+           em.innerHTML = "Eren Team Turn"
+           image.src="assets\\erentitan.jpg";
+       }
     resetCountdown()
 }
 function startPauseToggle() {
@@ -905,5 +922,5 @@ function closepopup(){
 
 }
 
-
+        
 setupGame();
