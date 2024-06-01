@@ -123,6 +123,11 @@ body {
 .piece {
     pointer-events: none;  
 }
+#player_image{
+     float: left;
+     
+
+}
 
 .dark {
     background-color: #4D7EA8;
@@ -252,12 +257,13 @@ p {
     background-color: #353535c9;
     border-radius: 6px;
     margin: 0 auto;
-    margin-bottom: 70px;
+    margin-bottom: 60px;
     
 }
 
 #turnIndicator {
-    margin-top: 0;
+    margin-top: 10;
+    float: right;
 }
 
 button {
