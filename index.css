@@ -125,6 +125,8 @@ body {
 }
 #player_image{
      float: left;
+     width: 66px;
+     height: 66px;
      
 
 }
@@ -246,10 +248,22 @@ p {
 
 #ui {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 50% 30%;
     grid-template-rows: auto;
 }
-
+.undo_redo{
+    margin-top: 10px;
+}
+.rotateIndicatorContainer{
+    padding: 2rem;
+    text-align: left;
+    width: max-content;
+    background-color: #353535c9;
+    border-radius: 6px;
+    margin: 0 auto;
+    
+    margin-bottom: 30px;
+}
 .turnIndicatorContainer {
     padding: 2rem;
     text-align: left;
@@ -257,13 +271,28 @@ p {
     background-color: #353535c9;
     border-radius: 6px;
     margin: 0 auto;
-    margin-bottom: 60px;
+    width: 420px;
+    margin-bottom: 30px;
+    
+    display: grid;
     
 }
-
+.settings{
+    margin-top: 2px;
+    display: grid;
+    grid-auto-flow: column;
+    
+    
+   
+   
+}
 #turnIndicator {
     margin-top: 10;
-    float: right;
+    float: center;
+}
+#timer{
+   float: center;
+   text-align: left;
 }
 
 button {
@@ -274,8 +303,8 @@ button {
     border-radius: 6px;
     cursor: pointer;
     width: 125px;
-    height: 50px;
-    font-size: 17px;
+    height:50px;
+    font-size: 16   px;
 }
 
 button:hover {
