@@ -10,6 +10,9 @@ let game_end=false;
 
 let markedMoves = [];
 
+
+
+
 function setupGame() {
     
     board = [["", "", "", "ec", "ek", "es", "",""],
@@ -29,10 +32,104 @@ function reset() {
 
     location.reload();
 }
+let playMode = "h";
+
+let humansTeam = "e";
+function setgameMode() {
 
 
+    if(playMode != "h") {
+        playMode = "h";
+        document.getElementById('bot').textContent='vs computer';
+
+  } else {
+       playMode = "c";
+       if (erenTurn){
+    humansTeam='e';
+       }
+       else{
+        humansTeam='r';
+       }
+       document.getElementById('bot').textContent='vs Human';
+    }
+}
+function makeComputerMove(computerColor) {
+
+    let randomMarker;
+
+    let pieces = getAllActivePiecesOfPlayer(computerColor);
+    console.log(pieces);
+
+    while(randomMarker == null ) {
+
+        let randomPiece = pieces[Math.floor(Math.random() * pieces.length)];
+        console.log(randomPiece);
+        let arr=Array.from(randomPiece);
+        
+        
+        const index = pieces.indexOf(randomPiece);
+        if (index > -1) {
+            pieces.splice(index, 1);
+        }
+
+        document.getElementById(randomPiece).click();
+        let allMarkers;
+        if(arr[1]=='r' || arr[1]=='s'){
+            let rotate_markers=['l','r'];
+             allMarkers = document.getElementsByClassName("marker");
+     
+             allMarkers= Array.from(allMarkers);
+            allMarkers.concat(rotate_markers);
 
 
+        }
+         
+         allMarkers = document.getElementsByClassName("marker");
+
+       
+        if(allMarkers.length === 0) {
+            deleteMarker();
+            unmarkPiece();
+        } else {
+            randomMarker = allMarkers[Math.floor(Math.random() * allMarkers.length)];
+        }
+    }
+       if(randomMarker=='l' ){
+        setTimeout(function(){ 
+            rotateLeft();
+        }, 1500);
+                      return
+       }
+       if(randomMarker=='r' ){
+        setTimeout(function(){ 
+            rotateRight();
+        }, 1500);
+        return;
+}
+       
+    
+   
+    setTimeout(function(){ 
+            randomMarker.click();
+        }, 1500);
+    
+}
+
+
+function getAllActivePiecesOfPlayer(player) {
+
+    let activePiecesOfPlayer = [];
+
+    for(let i = 0; i < board.length; i++) {
+        for(let j = 0; j < board[i].length; j++) {
+
+            if(board[i][j].startsWith(player)) {
+                activePiecesOfPlayer.push(board[i][j]);
+            }
+        }
+    }
+    return activePiecesOfPlayer;
+}
 
 
 function choose_direction(cur_position, last_position) {
@@ -169,6 +266,9 @@ function choose_direction(cur_position, last_position) {
         return specialDetermineDirection(diff, angle);
     }
 }
+function newboard(piece_position){
+    board[piece_position.row][piece_position.col]='';
+}
 
 
 function missile_path(cur_position, last_position) {
@@ -265,7 +365,7 @@ function fire() {
     } else {
         position = givePosition(board, 'rc');
     }
-
+    changeTurn();
    
     const bullet = document.createElement('div');
     bullet.classList.add('bullet');
@@ -317,14 +417,18 @@ function fire() {
                     if (arr[0]=='r') {
                         popup("Team Eren wins");
                         game_end=true;
+                        pauseCountdown();
+                        
                     } else {
                         popup("Team Reiner wins");
                         game_end=true;
+                        pauseCountdown();
+                        
                         
                     }
                 }
                 else if (arr[1] === 's') {
-                    console.log('working');
+                
                     let piece=document.getElementById(piece_id);
 
                     piece.remove();
@@ -335,6 +439,24 @@ function fire() {
             }
             
                 overlay.style.display = "none";
+               
+               
+                
+               
+               if (!game_end){ if(playMode === "c") {
+                    
+                   
+                    if(erenTurn && humansTeam === "r") {
+                        makeComputerMove("e");
+                    };
+            
+                    if(!erenTurn && humansTeam === "e") {
+                        makeComputerMove("r");
+                    }
+                    
+                }}
+            
+              
                 
             
         }
@@ -343,25 +465,33 @@ function fire() {
     
 
 }
-function newboard(piece_position){
-     board[piece_position.row][piece_position.col]='';
+function computerturn_check(){
+    if (playMode=='c'){
+         if (humansTeam=='e' && !erenTurn){
+            return true;
+         }
+         if (humansTeam=='r' && erenTurn){
+            return true;
+         }
+    }
 }
 
 
 
- function movePiece(newField) {
 
+ function movePiece(newField) {
+   
+   
     newField = newField.parentElement;
 
     if(markedMoves.includes(newField.id)) {
 
-        // get position object of new piece position
+       
         let newFieldPosition = fieldIdToBoardPosition(newField.id);
         let piecePositionOnBoard=givePosition(board,pieceOnFocus.id)
     
 
-        /* ---------moving visual piece img--------*/
-        // get positioning classes of piece to move
+       
         let pieceRow = pieceOnFocus.classList[1];
         let pieceCol = pieceOnFocus.classList[2];
 
@@ -386,7 +516,7 @@ function newboard(piece_position){
         unmarkPiece();
         
         fire();
-        changeTurn();
+        
        
     }
 
@@ -406,7 +536,7 @@ let initialTime = 10;
 var image=document.getElementById('player_image');
 const timerDisplay = document.getElementById('timer');
 function changeTurn() {
-
+      
     let em = document.getElementById("turnIndicator");
 
 
@@ -419,19 +549,22 @@ function changeTurn() {
            em.innerHTML = "Eren Team Turn"
            image.src="assets\\erentitan.jpg";
        }
-    resetCountdown()
+    resetCountdown();
 }
 function startPauseToggle() {
     if (!timerRunning) {
         startCountdown();
         document.getElementById('pause_button').innerHTML='Pause timer';
+       
     } else {
         pauseCountdown();
         document.getElementById('pause_button').innerHTML='Resume timer';
     }
 }
 function startCountdown() {
+    
     timerRunning = true;
+    
     countdownInterval = setInterval(updateTimer, 1000);
     var pieces = document.querySelectorAll('.piece');
 
@@ -441,24 +574,31 @@ function startCountdown() {
     });
 }
 function updateTimer() {
-    timeLeft--;
-    if (timeLeft >= 0) {
-        timerDisplay.textContent = 'Time left: ' + timeLeft;
-    } else {
-        clearInterval(countdownInterval);
-        timerDisplay.textContent = 'Time left: 0';
-        timerRunning = false;
-        if (erenTurn){ 
-            popup('Time is up!  Reinar Team wins');
-            setTimeout(reset, 500);
-               }
-        else {
-            popup('Time is up!  Eren Team wins');
-            setTimeout(reset, 500);
-            
-            }
-    }
-}
+    if(!computerturn_check()){
+ 
+    
+     timeLeft--;
+     if (timeLeft >= 0) {
+         timerDisplay.textContent = 'Time left: ' + timeLeft;
+     } else {
+         clearInterval(countdownInterval);
+         timerDisplay.textContent = 'Time left: 0';
+         timerRunning = false;
+         if (erenTurn){ 
+             popup('Time is up!  Reinar Team wins');
+             game_end=true;
+                }
+         else {
+             popup('Time is up!  Eren Team wins');
+             game_end=ture;
+             }
+     }}
+     else{
+         timerDisplay.textContent = 'NO timer for bot' ;
+        
+
+     }
+ }
 function pauseCountdown() {
     clearInterval(countdownInterval);
     timerRunning = false;
@@ -476,6 +616,8 @@ function resetCountdown() {
     timeLeft = initialTime;
     timerDisplay.textContent = 'Time left: ' + timeLeft;
     timerRunning = true;
+    if (computerturn_check)
+   { document.getElementById('pause_button').innerHTML='Pause timer';}
     startCountdown()
 }
 function instruct(){
@@ -828,21 +970,7 @@ function fieldIdToBoardPosition(fieldId) {
     };
 }
 
-function getAllActivePiecesOfPlayer(player, activeBoard) {
 
-    let activePiecesOfPlayer = [];
-
-    for(let i = 0; i < activeBoard.length; i++) {
-        for(let j = 0; j < activeBoard[i].length; j++) {
-
-            if(activeBoard[i][j].startsWith(player)) {
-                activePiecesOfPlayer.push(activeBoard[i][j]);
-            }
-        }
-    }
-
-    return activePiecesOfPlayer;
-}
 
 function rotateLeft(){
     let rotationAngle=update_angles(-90);
@@ -850,7 +978,7 @@ function rotateLeft(){
     unmarkPiece();
     deleteMarker();
     fire();   
-    changeTurn();
+    
      
 }
 function rotateRight(){
@@ -859,7 +987,7 @@ function rotateRight(){
     deleteMarker();
     unmarkPiece();
     fire();
-    changeTurn();   
+   
    
     
 }
@@ -922,5 +1050,12 @@ function closepopup(){
 
 }
 
+   
+    
+ 
         
+        
+
+
+
 setupGame();
